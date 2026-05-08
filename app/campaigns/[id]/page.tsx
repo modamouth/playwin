@@ -1,9 +1,14 @@
+"use client";
+
+import { useParams } from "next/navigation";
 import { Nav } from "@/components/Nav";
 import { MetricCard } from "@/components/MetricCard";
 import { campaigns, leads, leaderboard } from "@/lib/mockData";
 
-export default function CampaignDetailPage({ params }: { params: { id: string } }) {
-  const campaign = campaigns.find((c) => c.id === params.id) || campaigns[0];
+export default function CampaignDetailPage() {
+  const params = useParams();
+  const campaignId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const campaign = campaigns.find((c) => c.id === campaignId) || campaigns[0];
 
   return (
     <>
