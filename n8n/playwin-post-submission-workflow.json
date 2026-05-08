@@ -1,0 +1,86 @@
+{
+  "name": "PlayWin - Post Submission Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "playwin-lead-submitted",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "name": "Lead Submitted Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{ json: { ...items[0].json, message: `New PlayWin lead: ${items[0].json.name || 'Unknown'} - ${items[0].json.phone || ''}` } }];"
+      },
+      "name": "Prepare Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        520,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "Send WhatsApp/SMS Placeholder",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        740,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "Append to Google Sheet Placeholder",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        960,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Lead Submitted Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Message": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp/SMS Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send WhatsApp/SMS Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Append to Google Sheet Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

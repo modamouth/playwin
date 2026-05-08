@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quiz Challenge Demo</title>
+  <style>
+    body { margin:0; background:#0b1020; color:white; font-family:Arial,sans-serif; min-height:100vh; display:grid; place-items:center; }
+    .app { width:min(520px,calc(100% - 24px)); background:#121a30; border:1px solid rgba(255,255,255,.12); border-radius:24px; padding:24px; }
+    button,input { width:100%; padding:13px; border-radius:14px; border:0; margin-top:10px; }
+    button { background:#d5293f; color:white; font-weight:800; cursor:pointer; text-align:left; }
+    .small { color:#9fb0d0; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>Money Smart Quiz</h1>
+    <p class="small">Answer the questions and submit your score.</p>
+    <div id="quiz"></div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const campaign = params.get("campaign") || "demo-quiz";
+    const questions = [
+      { q: "What is a budget used for?", a: ["Tracking income and expenses", "Guessing prices", "Avoiding saving"], correct: 0 },
+      { q: "Why is an emergency fund useful?", a: ["For unexpected costs", "For random spending", "Only for holidays"], correct: 0 },
+      { q: "What should you check before clicking an SMS link?", a: ["Whether it is legitimate", "Only the colour", "Nothing"], correct: 0 }
+    ];
+    let index = 0, score = 0;
+
+    function trackEvent(type, payload = {}) {
+      const event = { campaign_id: campaign, type, payload, ts: new Date().toISOString() };
+      if (window.parent === window) console.log("trackEvent", event);
+      else window.parent.postMessage(event, "*");
+    }
+
+    function render() {
+      const el = document.getElementById("quiz");
+      if (index >= questions.length) {
+        trackEvent("score_submitted", { score });
+        el.innerHTML = `
+          <h2>Your score: ${score}/${questions.length}</h2>
+          <input id="name" placeholder="Name">
+          <input id="phone" placeholder="Phone">
+          <button onclick="submitLead()">Submit Entry</button>
+        `;
+        return;
+      }
+
+      const item = questions[index];
+      el.innerHTML = `<h2>${item.q}</h2>` + item.a.map((answer, i) => `<button onclick="answer(${i})">${answer}</button>`).join("");
+    }
+
+    function answer(i) {
+      if (i === questions[index].correct) score++;
+      trackEvent("question_answered", { index, correct: i === questions[index].correct });
+      index++;
+      render();
+    }
+
+    function submitLead() {
+      trackEvent("lead_submitted", {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        score
+      });
+      document.getElementById("quiz").innerHTML = `<h2>Thank you for entering.</h2><p class="small">Your score has been submitted.</p>`;
+    }
+
+    trackEvent("game_loaded");
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Spin & Win Demo</title>
+  <style>
+    :root { --primary:#d5293f; --bg:#0b1020; --text:#fff; }
+    body { margin:0; background:radial-gradient(circle at top,#27345c,#0b1020); color:var(--text); font-family:Arial,sans-serif; min-height:100vh; display:grid; place-items:center; }
+    .app { width:min(440px,calc(100% - 24px)); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:24px; padding:24px; text-align:center; }
+    .wheel { width:260px; height:260px; border-radius:50%; margin:20px auto; background: conic-gradient(#d5293f 0 60deg,#ffd166 60deg 120deg,#06d6a0 120deg 180deg,#118ab2 180deg 240deg,#ef476f 240deg 300deg,#073b4c 300deg 360deg); border:8px solid rgba(255,255,255,.3); transition:transform 3s cubic-bezier(.2,.8,.2,1); }
+    button,input { width:100%; padding:13px; border-radius:14px; border:0; margin-top:10px; }
+    button { background:var(--primary); color:white; font-weight:800; cursor:pointer; }
+    input { background:rgba(255,255,255,.12); color:white; border:1px solid rgba(255,255,255,.16); }
+    .result { font-size:22px; font-weight:800; min-height:32px; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1 id="title">Spin & Win</h1>
+    <p id="subtitle">Enter your details and spin for a chance to win.</p>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <div class="wheel" id="wheel"></div>
+    <button id="spin">Spin Now</button>
+    <p class="result" id="result"></p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const campaign = params.get("campaign") || "demo-spin";
+    let spun = false;
+
+    async function trackEvent(type, payload = {}) {
+      const event = { campaign_id: campaign, type, payload, ts: new Date().toISOString() };
+
+      // Standalone context: send directly.
+      if (window.parent === window) {
+        console.log("trackEvent", event);
+        // await fetch("https://api.playwin.africa/event", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(event) });
+      } else {
+        // Embedded context: parent dashboard can handle the API call.
+        window.parent.postMessage(event, "*");
+      }
+    }
+
+    trackEvent("game_loaded");
+
+    document.getElementById("spin").addEventListener("click", async () => {
+      if (spun) return;
+      spun = true;
+      await trackEvent("game_started");
+
+      const wheel = document.getElementById("wheel");
+      const deg = 720 + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${deg}deg)`;
+
+      setTimeout(async () => {
+        const prizes = ["10% voucher", "Free chips", "Try again", "Grand draw entry"];
+        const prize = prizes[Math.floor(Math.random() * prizes.length)];
+        document.getElementById("result").textContent = prize;
+        await trackEvent("lead_submitted", {
+          name: document.getElementById("name").value,
+          phone: document.getElementById("phone").value,
+          prize
+        });
+      }, 3100);
+    });
+  </script>
+</body>
+</html>
