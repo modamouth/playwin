@@ -8,7 +8,12 @@ export const campaigns = [
     plays: 2450,
     leads: 940,
     completions: 1380,
-    vouchers: 250
+    vouchers: 250,
+    monthlyStats: [
+      { month: "2026-03", plays: 1350, leads: 520, completions: 890, vouchers: 120 },
+      { month: "2026-04", plays: 1800, leads: 670, completions: 980, vouchers: 170 },
+      { month: "2026-05", plays: 2450, leads: 940, completions: 1380, vouchers: 250 }
+    ]
   },
   {
     id: "sanlam-quiz-2026",
@@ -19,7 +24,12 @@ export const campaigns = [
     plays: 820,
     leads: 310,
     completions: 470,
-    vouchers: 0
+    vouchers: 0,
+    monthlyStats: [
+      { month: "2026-03", plays: 420, leads: 150, completions: 210, vouchers: 0 },
+      { month: "2026-04", plays: 620, leads: 225, completions: 340, vouchers: 0 },
+      { month: "2026-05", plays: 820, leads: 310, completions: 470, vouchers: 0 }
+    ]
   },
   {
     id: "kfc-spin-2026",
@@ -30,7 +40,12 @@ export const campaigns = [
     plays: 5120,
     leads: 2600,
     completions: 4010,
-    vouchers: 780
+    vouchers: 780,
+    monthlyStats: [
+      { month: "2026-03", plays: 3200, leads: 1650, completions: 2350, vouchers: 460 },
+      { month: "2026-04", plays: 4200, leads: 2180, completions: 3160, vouchers: 620 },
+      { month: "2026-05", plays: 5120, leads: 2600, completions: 4010, vouchers: 780 }
+    ]
   }
 ];
 
