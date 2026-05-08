@@ -142,6 +142,9 @@ with check (public.is_admin());
 create policy "clients can read own campaigns" on campaigns
 for select using (client_id = public.current_client_id());
 
+create policy "allow anonymous campaign creation" on campaigns
+for insert with check (true);
+
 -- Leads, sessions, events, vouchers and leaderboard entries are visible by campaign ownership.
 create policy "admins can manage sessions" on game_sessions for all using (public.is_admin()) with check (public.is_admin());
 create policy "clients can read own sessions" on game_sessions for select using (
