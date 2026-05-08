@@ -31,5 +31,16 @@
     "campaignToken": "sanlam-aliens-001",
     "prizeMessage": "Stand a chance to win N$ in our competition",
     "createdAt": "2026-05-08T11:10:31.393Z"
+  },
+  {
+    "id": "1778240140649",
+    "clientName": "Skytouch",
+    "campaignName": "Skytouch Maze",
+    "gameType": "maze",
+    "status": "draft",
+    "primaryColour": "#d5293f",
+    "campaignToken": "skytouch-win-001",
+    "prizeMessage": "Stand a chance to win a trip to Cape Town !!!",
+    "createdAt": "2026-05-08T11:35:40.649Z"
   }
 ]
