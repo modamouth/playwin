@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function DashboardPage() {
   const plays = campaigns.reduce((sum, c) => sum + c.plays, 0);
   const leads = campaigns.reduce((sum, c) => sum + c.leads, 0);
-  const completions = campaigns.reduce((sum, c) => sum + c.completions, 0);
   const conversion = ((leads / plays) * 100).toFixed(1) + "%";
 
   return (
