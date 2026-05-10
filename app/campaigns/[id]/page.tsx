@@ -1,27 +1,41 @@
-"use client";
-
-import { useParams } from "next/navigation";
 import { Nav } from "@/components/Nav";
 import { MetricCard } from "@/components/MetricCard";
-import { campaigns, leads, leaderboard } from "@/lib/mockData";
+import { getCampaignById } from "@/lib/campaigns";
+import { leaderboard, leads } from "@/lib/mockData";
 
-export default function CampaignDetailPage() {
-  const params = useParams();
-  const campaignId = Array.isArray(params?.id) ? params.id[0] : params?.id;
-  const campaign = campaigns.find((c) => c.id === campaignId) || campaigns[0];
+export default async function CampaignDetailPage({ params }: { params: { id: string } }) {
+  const campaign = await getCampaignById(params.id);
+
+  if (!campaign) {
+    return (
+      <>
+        <Nav />
+        <main className="container" style={{ padding: "32px 0" }}>
+          <h1>Campaign not found</h1>
+          <p style={{ color: "var(--muted)" }}>No campaign exists for ID {params.id}.</p>
+        </main>
+      </>
+    );
+  }
+
+  const playCount = 0;
+  const leadCount = 0;
+  const completions = 0;
+  const voucherCount = 0;
+  const leadConversion = playCount > 0 ? `${((leadCount / playCount) * 100).toFixed(1)}%` : "0%";
 
   return (
     <>
       <Nav />
       <main className="container" style={{ padding: "32px 0" }}>
         <span className="badge">{campaign.status}</span>
-        <h1>{campaign.name}</h1>
-        <p style={{ color: "var(--muted)" }}>{campaign.client} · {campaign.type}</p>
+        <h1>{campaign.campaignName}</h1>
+        <p style={{ color: "var(--muted)" }}>{campaign.clientName} · {campaign.gameType}</p>
 
         <div className="grid grid-3">
-          <MetricCard title="Plays" value={campaign.plays.toLocaleString()} />
-          <MetricCard title="Leads" value={campaign.leads.toLocaleString()} />
-          <MetricCard title="Vouchers" value={campaign.vouchers.toLocaleString()} />
+          <MetricCard title="Plays" value={playCount.toLocaleString()} />
+          <MetricCard title="Leads" value={leadCount.toLocaleString()} />
+          <MetricCard title="Vouchers" value={voucherCount.toLocaleString()} />
         </div>
 
         <div className="grid grid-2" style={{ marginTop: 18 }}>
@@ -44,9 +58,9 @@ export default function CampaignDetailPage() {
           <div className="card">
             <h2>Funnel</h2>
             <div className="grid">
-              <MetricCard title="Game starts" value={campaign.plays.toLocaleString()} />
-              <MetricCard title="Completions" value={campaign.completions.toLocaleString()} />
-              <MetricCard title="Lead conversion" value={`${((campaign.leads / campaign.plays) * 100).toFixed(1)}%`} />
+              <MetricCard title="Game starts" value={playCount.toLocaleString()} />
+              <MetricCard title="Completions" value={completions.toLocaleString()} />
+              <MetricCard title="Lead conversion" value={leadConversion} />
             </div>
           </div>
         </div>
