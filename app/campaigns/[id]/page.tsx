@@ -28,7 +28,7 @@ export default async function CampaignDetailPage({ params }: { params: { id: str
     <>
       <Nav />
       <main className="container" style={{ padding: "32px 0" }}>
-        <span className="badge">{campaign.status}</span>
+        <span className={`badge ${campaign.status === 'active' ? 'active' : ''}`}>{campaign.status}</span>
         <h1>{campaign.campaignName}</h1>
         <p style={{ color: "var(--muted)" }}>{campaign.clientName} · {campaign.gameType}</p>
 

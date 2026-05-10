@@ -118,3 +118,8 @@ th {
   color: #ffb6c0;
   font-size: 12px;
 }
+
+.badge.active {
+  background: rgba(34, 197, 94, .14);
+  color: #bbf7d0;
+}

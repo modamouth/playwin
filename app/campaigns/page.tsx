@@ -75,7 +75,7 @@ export default function CampaignsPage() {
           ) : (
             campaigns.map((c) => (
               <Link href={`/campaigns/${c.id}`} className="card" key={c.id}>
-                <span className="badge">{c.status}</span>
+                <span className={`badge ${c.status === 'active' ? 'active' : ''}`}>{c.status}</span>
                 <h2>{c.name}</h2>
                 <p style={{ color: "var(--muted)" }}>{c.client} · {c.type}</p>
               </Link>

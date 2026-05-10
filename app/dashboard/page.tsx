@@ -86,7 +86,7 @@ export default function DashboardPage() {
                   <td><Link href={`/campaigns/${c.id}`}>{c.name}</Link></td>
                   <td>{c.client}</td>
                   <td>{c.type}</td>
-                  <td><span className="badge">{c.status}</span></td>
+                  <td><span className={`badge ${c.status === 'active' ? 'active' : ''}`}>{c.status}</span></td>
                   <td>{(c.monthPlays ?? 0).toLocaleString()}</td>
                   <td>{(c.monthLeads ?? 0).toLocaleString()}</td>
                 </tr>
