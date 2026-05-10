@@ -3,37 +3,58 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const defaultLoginEmail = process.env.NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL || "";
+const validUsername = "skytouch";
+const validPassword = "skytouch";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState(defaultLoginEmail);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push("/dashboard");
+    if (username === validUsername && password === validPassword) {
+      router.push("/dashboard");
+    } else {
+      setError("Invalid username or password. Use skytouch / skytouch.");
+    }
   };
 
   return (
     <main className="container" style={{ padding: "55px 0" }}>
       <section className="card" style={{ maxWidth: 520, margin: "0 auto", padding: 40 }}>
-        <h1>Login</h1>
+        <h1>Admin Login</h1>
         <p style={{ color: "var(--muted)", marginBottom: 24 }}>
-          Use the default login email and continue to the dashboard.
+          Enter the admin credentials to access the dashboard.
         </p>
 
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email" style={{ display: "block", marginBottom: 8 }}>
-            Email address
+          <label htmlFor="username" style={{ display: "block", marginBottom: 8 }}>
+            Username
           </label>
           <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            id="username"
+            type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
             required
             style={{ width: "100%", padding: "12px 14px", marginBottom: 16, borderRadius: 8, border: "1px solid #ccc" }}
           />
+
+          <label htmlFor="password" style={{ display: "block", marginBottom: 8 }}>
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            style={{ width: "100%", padding: "12px 14px", marginBottom: 16, borderRadius: 8, border: "1px solid #ccc" }}
+          />
+
+          {error && <p style={{ color: "#ff6b6b", marginBottom: 16 }}>{error}</p>}
 
           <button
             type="submit"
@@ -44,7 +65,7 @@ export default function LoginPage() {
         </form>
 
         <p style={{ marginTop: 24, color: "var(--muted)" }}>
-          You will be redirected to the dashboard.
+          Admin account: <strong>skytouch</strong> / <strong>skytouch</strong>
         </p>
       </section>
     </main>
