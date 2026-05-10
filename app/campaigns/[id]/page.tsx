@@ -3,8 +3,9 @@ import { MetricCard } from "@/components/MetricCard";
 import { getCampaignById } from "@/lib/campaigns";
 import { leaderboard, leads } from "@/lib/mockData";
 
-export default async function CampaignDetailPage({ params }: { params: { id: string } }) {
-  const campaign = await getCampaignById(params.id);
+export default async function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const campaign = await getCampaignById(id);
 
   if (!campaign) {
     return (
@@ -12,7 +13,7 @@ export default async function CampaignDetailPage({ params }: { params: { id: str
         <Nav />
         <main className="container" style={{ padding: "32px 0" }}>
           <h1>Campaign not found</h1>
-          <p style={{ color: "var(--muted)" }}>No campaign exists for ID {params.id}.</p>
+          <p style={{ color: "var(--muted)" }}>No campaign exists for ID {id}.</p>
         </main>
       </>
     );
