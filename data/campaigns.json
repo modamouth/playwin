@@ -42,5 +42,16 @@
     "campaignToken": "skytouch-win-001",
     "prizeMessage": "Stand a chance to win a trip to Cape Town !!!",
     "createdAt": "2026-05-08T11:35:40.649Z"
+  },
+  {
+    "id": "1778483916776",
+    "clientName": "Adaire",
+    "campaignName": "Adaire Spin Campaign",
+    "gameType": "spin",
+    "status": "active",
+    "primaryColour": "#d5293f",
+    "campaignToken": "adaire-spin-campaign-0001",
+    "prizeMessage": "Stand a chance to win N$500",
+    "createdAt": "2026-05-11T07:18:36.776Z"
   }
 ]
